@@ -233,7 +233,6 @@ void change_dir(int code)
 	//printf("shx: %d\n", snake.head.x);
 	//printf("shy: %d\n", snake.head.y);
 	//printf("snake.heading: %d\n\n", snake.heading);
-	//int code = ev[i];
 	switch (code) {
 		case 1:
 			if (snake.heading != DOWN)
