@@ -258,7 +258,6 @@ void generate_events()
 {
 	//int xd = 0;
 	//int yd = 0;
-	int dir = 0;
 	if (snake.head.x < apple.x && snake.heading != UP) {
 		//xd = apple.x - snake.head.x;
 		//printf("xd: %d\n", xd);
