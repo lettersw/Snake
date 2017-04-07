@@ -232,7 +232,8 @@ void change_dir(int code)
 {
 	printf("shx: %d\n", snake.head.x);
 	printf("shy: %d\n", snake.head.y);
-	printf("snake.heading: %d\n\n", snake.heading);
+	printf("snake.heading: %d\n\n", snake.heading);	
+
 	switch (code) {
 		case 1:
 			if (snake.heading != DOWN)
@@ -250,6 +251,44 @@ void change_dir(int code)
 			if (snake.heading != RIGHT)
 				snake.heading = LEFT;
 			break;
+	}
+	/*struct segment_t *seg_i;
+	for(seg_i = snake.tail; seg_i->next; seg_i=seg_i->next) { //the path needs to be checked
+		if (snake.head.x == seg_i->x && snake.head.y == seg_i->y) {
+			//try to avoid the impending reset
+		}
+	}*/
+}
+
+wall_collison()
+{
+	if (snake.head.y > 5 && snake.head.x > 3) {
+		printf("upper wall collision detected!\n");
+		if (snake.head.x > 3)
+			change_dir(1);
+		else 
+			change_dir(3);	
+	}
+	else if (snake.head.y < 2) {
+		printf("lower wall collision detected!\n");
+		if (snake.head.x > 3)
+			change_dir(1);
+		else 
+			change_dir(3);
+	}
+	else if (snake.head.x > 5) {
+		printf("right wall collision detected!\n");
+		if (snake.head.y <= 3)
+			change_dir(2);
+		else
+			change_dir(4);
+	}
+	else if (snake.head.x < 2) {
+		printf("left wall collision detected!\n");
+		if (snake.head.y <= 3)
+			change_dir(2);
+		else
+			change_dir(4);
 	}
 }
 
@@ -277,40 +316,8 @@ void generate_events()
 		//printf("yd: %d\n", yd);
 		change_dir(4);
 	}
-	else { //wall collision detection
-		if (snake.head.y > 5 && snake.head.x > 3) {
-			change_dir(1);
-			printf("upper wall collision detected!\n");
-		}
-		else if (snake.head.y > 5 && snake.head.x < 3) {
-			change_dir(3);
-			printf("upper wall collision detected!\n");
-		}
-		else if (snake.head.y < 2 && snake.head.x > 3) {
-			change_dir(1);
-			printf("lower wall collision detected!\n");
-		}
-		else if (snake.head.y < 2 && snake.head.x < 3) {
-			change_dir(3);
-			printf("lower wall collision detected!\n");
-		}
-		else if (snake.head.x > 5 && snake.head.y < 3) {
-			change_dir(2);
-			printf("right wall collision detected!\n");
-		}
-		else if (snake.head.x > 5 && snake.head.y > 3) {
-			change_dir(4);
-			printf("right wall collision detected!\n");
-		}
-		else if (snake.head.x < 2 && snake.head.y < 3) {
-			change_dir(2);
-			printf("left wall collision detected!\n");
-		}
-		else if (snake.head.x < 2 && snake.head.y > 3) {
-			change_dir(4);
-			printf("left wall collision detected!\n");
-		}
-	}	
+	else
+		wall_collison();
 }
 
 int main(int argc, char* args[])
