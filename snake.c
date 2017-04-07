@@ -12,7 +12,6 @@
 #include <sys/mman.h>
 #include <sys/ioctl.h>
 #include <time.h>
-#include <poll.h>
 #include <dirent.h>
 #include <string.h>
 
@@ -289,17 +288,6 @@ int main(int argc, char* args[])
 {
 	int ret = 0;
 	int fbfd = 0;
-	struct pollfd evpoll = {
-		.events = POLLIN,
-	};
-	
-	srand(time(NULL));
-
-	evpoll.fd = open_evdev("Raspberry Pi Sense HAT Joystick");
-	if (evpoll.fd < 0) {
-		fprintf(stderr, "Event device not found.\n");
-		return evpoll.fd;
-	}
 
 	fbfd = open_fbdev("RPi-Sense FB");
 	if (fbfd <= 0) {
@@ -334,7 +322,6 @@ int main(int argc, char* args[])
 err_fb:
 	close(fbfd);
 err_ev:
-	close(evpoll.fd);
 	return ret;
 }
  
