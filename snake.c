@@ -260,7 +260,7 @@ void change_dir(int code)
 	}*/
 }
 
-wall_collison()
+void wall_collison()
 {
 	if (snake.head.y > 5 && snake.head.x > 3) {
 		printf("upper wall collision detected!\n");
