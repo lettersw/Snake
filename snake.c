@@ -230,9 +230,9 @@ void reset(void)
 
 void change_dir(int code)
 {
-	//printf("shx: %d\n", snake.head.x);
-	//printf("shy: %d\n", snake.head.y);
-	//printf("snake.heading: %d\n\n", snake.heading);
+	printf("shx: %d\n", snake.head.x);
+	printf("shy: %d\n", snake.head.y);
+	printf("snake.heading: %d\n\n", snake.heading);
 	switch (code) {
 		case 1:
 			if (snake.heading != DOWN)
@@ -272,10 +272,44 @@ void generate_events()
 		//printf("yd: %d\n", yd);
 		change_dir(2);
 	}
-	else if (snake.head.y > apple.y &&snake.heading != RIGHT) {
+	else if (snake.head.y > apple.y && snake.heading != RIGHT) {
 		//yd = snake.head.y - apple.y;
 		//printf("yd: %d\n", yd);
 		change_dir(4);
+	}
+	else { //wall collision detection
+		if (snake.head.y > 5 && snake.head.x > 3) {
+			change_dir(1);
+			printf("upper wall collision detected!\n");
+		}
+		else if (snake.head.y > 5 && snake.head.x < 3) {
+			change_dir(3);
+			printf("upper wall collision detected!\n");
+		}
+		else if (snake.head.y < 2 && snake.head.x > 3) {
+			change_dir(1);
+			printf("lower wall collision detected!\n");
+		}
+		else if (snake.head.y < 2 && snake.head.x < 3) {
+			change_dir(3);
+			printf("lower wall collision detected!\n");
+		}
+		else if (snake.head.x > 5 && snake.head.y < 3) {
+			change_dir(2);
+			printf("right wall collision detected!\n");
+		}
+		else if (snake.head.x > 5 && snake.head.y > 3) {
+			change_dir(4);
+			printf("right wall collision detected!\n");
+		}
+		else if (snake.head.x < 2 && snake.head.y < 3) {
+			change_dir(2);
+			printf("left wall collision detected!\n");
+		}
+		else if (snake.head.x < 2 && snake.head.y > 3) {
+			change_dir(4);
+			printf("left wall collision detected!\n");
+		}
 	}	
 }
 
@@ -283,6 +317,8 @@ int main(int argc, char* args[])
 {
 	int ret = 0;
 	int fbfd = 0;
+	
+	srand(time(NULL));
 
 	fbfd = open_fbdev("RPi-Sense FB");
 	if (fbfd <= 0) {
