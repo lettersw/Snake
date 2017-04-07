@@ -262,26 +262,23 @@ void generate_events()
 	if (snake.head.x < apple.x && snake.heading != UP) {
 		//xd = apple.x - snake.head.x;
 		//printf("xd: %d\n", xd);
-		dir = 3;
+		change_dir(3);
 	}
 	else if (snake.head.x > apple.x && snake.heading != DOWN) {
 		//xd = snake.head.x - apple.x;
 		//printf("xd: %d\n", xd);
-		dir = 1;
+		change_dir(1);
 	}
 	else if (snake.head.y < apple.y && snake.heading != LEFT) {
 		//yd = apple.y - snake.head.y;
 		//printf("yd: %d\n", yd);
-		dir = 2;
+		change_dir(2);
 	}
 	else if (snake.head.y > apple.y &&snake.heading != RIGHT) {
 		//yd = snake.head.y - apple.y;
 		//printf("yd: %d\n", yd);
-		dir = 4;
-	}
-	change_dir(dir);
-
-		
+		change_dir(4);
+	}	
 }
 
 int main(int argc, char* args[])
