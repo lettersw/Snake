@@ -228,13 +228,12 @@ void reset(void)
 	snake.heading = NONE;
 }
 
-void change_dir(int code)
+void change_dir(int dir)
 {
-	printf("shx: %d\n", snake.head.x);
-	printf("shy: %d\n", snake.head.y);
-	printf("snake.heading: %d\n\n", snake.heading);	
-
-	switch (code) {
+	//printf("shx: %d\n", snake.head.x);
+	//printf("shy: %d\n", snake.head.y);
+	//printf("snake.heading: %d\n\n", snake.heading);
+	switch (dir) {
 		case 1:
 			if (snake.heading != DOWN)
 				snake.heading = UP;
@@ -252,39 +251,102 @@ void change_dir(int code)
 				snake.heading = LEFT;
 			break;
 	}
-	/*struct segment_t *seg_i;
-	for(seg_i = snake.tail; seg_i->next; seg_i=seg_i->next) { //the path needs to be checked
-		if (snake.head.x == seg_i->x && snake.head.y == seg_i->y) {
-			//try to avoid the impending reset
-		}
-	}*/
 }
-
-void wall_collison()
+/*
+int up, right, down, left;
+void snake_collision(int dir, int flag)
+{
+	struct segment_t *seg_i;
+	if (flag)
+		up = 0, right = 0, down = 0, left = 0;
+	switch (dir) {
+		case 1:
+			for(seg_i = snake.tail; seg_i->next; seg_i=seg_i->next) {
+				if (snake.head.x == seg_i->x && snake.head.y +1 == seg_i->y) {
+					up = 1;
+				}
+			}
+			if (!up)
+				change_dir(dir);
+			else if (!right)
+				snake_collision(2, 0);
+			else if (!down)
+				snake_collision(3, 0);
+			else if (!left)
+				snake_collision(4, 0);
+			break;
+		case 2:
+			for(seg_i = snake.tail; seg_i->next; seg_i=seg_i->next) {
+				if (snake.head.x +1 == seg_i->x && snake.head.y == seg_i->y) {
+					right = 1;
+				}
+			}
+			if (!right)
+				change_dir(dir);
+			else if (!down)
+				snake_collision(3, 0);
+			else if (!left)
+				snake_collision(4, 0);
+			else if (!up)
+				snake_collision(1, 0);
+			break;
+		case 3:
+			for(seg_i = snake.tail; seg_i->next; seg_i=seg_i->next) {
+				if (snake.head.x == seg_i->x && snake.head.y -1 == seg_i->y) {
+					down = 1;
+				}
+			}
+			if (!down)
+				change_dir(dir);
+			else if (!left)
+				snake_collision(4, 0);
+			else if (!up)
+				snake_collision(1, 0);
+			else if (!right)
+				snake_collision(2, 0);
+			break;
+		case 4:
+			for(seg_i = snake.tail; seg_i->next; seg_i=seg_i->next) {
+				if (snake.head.x -1 == seg_i->x && snake.head.y == seg_i->y) {
+					left = 1;
+				}
+			}
+			if (!left)
+				change_dir(dir);
+			else if (!down)
+				snake_collision(3, 0);
+			else if (!left)
+				snake_collision(4, 0);
+			else if (!up)
+				snake_collision(1, 0);
+			break;
+	}
+}*/
+void wall_collision()
 {
 	if (snake.head.y > 5 && snake.head.x > 3) {
-		printf("upper wall collision detected!\n");
+		//printf("upper wall collision detected!\n");
 		if (snake.head.x > 3)
 			change_dir(1);
 		else 
 			change_dir(3);	
 	}
 	else if (snake.head.y < 2) {
-		printf("lower wall collision detected!\n");
+		//printf("lower wall collision detected!\n");
 		if (snake.head.x > 3)
 			change_dir(1);
 		else 
 			change_dir(3);
 	}
 	else if (snake.head.x > 5) {
-		printf("right wall collision detected!\n");
+		//printf("right wall collision detected!\n");
 		if (snake.head.y <= 3)
 			change_dir(2);
 		else
 			change_dir(4);
 	}
 	else if (snake.head.x < 2) {
-		printf("left wall collision detected!\n");
+		//printf("left wall collision detected!\n");
 		if (snake.head.y <= 3)
 			change_dir(2);
 		else
@@ -317,7 +379,7 @@ void generate_events()
 		change_dir(4);
 	}
 	else
-		wall_collison();
+		wall_collision();
 }
 
 int main(int argc, char* args[])
@@ -352,7 +414,7 @@ int main(int argc, char* args[])
 			reset();
 		}
 		render();
-		usleep (300000);
+		usleep (200000);
 	}
 	memset(fb, 0, 128);
 	reset();
