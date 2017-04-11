@@ -46,6 +46,8 @@ struct fb_t {
 
 int running = 1;
 
+int path = 0;
+
 struct snake_t snake = {
 	{NULL, 4, 4},
 	NULL,
@@ -275,7 +277,7 @@ void snake_collision(int dir, int flag)
 				}
 			}
 			if (!up)
-				change_dir(dir);
+				path = dir;
 			else if (!right)
 				snake_collision(2, 0);
 			else if (!down)
@@ -290,7 +292,7 @@ void snake_collision(int dir, int flag)
 				}
 			}
 			if (!right)
-				change_dir(dir);
+				path = dir;
 			else if (!down)
 				snake_collision(3, 0);
 			else if (!left)
@@ -305,7 +307,7 @@ void snake_collision(int dir, int flag)
 				}
 			}
 			if (!down)
-				change_dir(dir);
+				path = dir;
 			else if (!left)
 				snake_collision(4, 0);
 			else if (!up)
@@ -320,7 +322,7 @@ void snake_collision(int dir, int flag)
 				}
 			}
 			if (!left)
-				change_dir(dir);
+				path = dir;
 			else if (!down)
 				snake_collision(3, 0);
 			else if (!left)
@@ -336,45 +338,53 @@ void wall_collision()
 	if (snake.head.y > 5 && snake.head.x > 3) {
 		//printf("upper wall collision detected!\n");
 		if (snake.head.x > 3) {
-			change_dir(1);
+			//change_dir(1);
 			//snake_collision(1, 1);
+			path = 1;
 		}
 		else {
-			change_dir(3);	
+			//change_dir(3);	
 			//snake_collision(3, 1);
+			path = 3;
 		}
 	}
 	else if (snake.head.y < 2) {
 		//printf("lower wall collision detected!\n");
 		if (snake.head.x > 3) {
-			change_dir(1);
+			//change_dir(1);
 			//snake_collision(1, 1);
+			path = 1;
 		}
 		else {
-			change_dir(3);
+			//change_dir(3);
 			//snake_collision(3, 1);
+			path = 3;
 		}
 	}
 	else if (snake.head.x > 5) {
 		//printf("right wall collision detected!\n");
 		if (snake.head.y <= 3) {
 			//change_dir(2);
-			snake_collision(2, 1);
+			//snake_collision(2, 1);
+			path = 2;
 		}
 		else {
-			change_dir(4);
+			//change_dir(4);
 			//snake_collision(4, 1);
+			path = 4;
 		}
 	}
 	else if (snake.head.x < 2) {
 		//printf("left wall collision detected!\n");
 		if (snake.head.y <= 3) {
-			change_dir(2);
+			//change_dir(2);
 			//snake_collision(2, 1);
+			path = 2;
 		}
 		else {
-			change_dir(4);
+			//change_dir(4);
 			//snake_collision(4, 1);
+			path = 4;
 		}
 	}
 }
@@ -386,26 +396,30 @@ void generate_events()
 	if (snake.head.x < apple.x && snake.heading != UP) {
 		//xd = apple.x - snake.head.x;
 		//printf("xd: %d\n", xd);
-		change_dir(3);
+		//change_dir(3);
 		//snake_collision(3, 1);
+		path = 3;
 	}
 	else if (snake.head.x > apple.x && snake.heading != DOWN) {
 		//xd = snake.head.x - apple.x;
 		//printf("xd: %d\n", xd);
-		change_dir(1);
+		//change_dir(1);
 		//snake_collision(1, 1);
+		path = 1;
 	}
 	else if (snake.head.y < apple.y && snake.heading != LEFT) {
 		//yd = apple.y - snake.head.y;
 		//printf("yd: %d\n", yd);
-		change_dir(2);
+		//change_dir(2);
 		//snake_collision(2, 1);
+		path = 2;
 	}
 	else if (snake.head.y > apple.y && snake.heading != RIGHT) {
 		//yd = snake.head.y - apple.y;
 		//printf("yd: %d\n", yd);
-		change_dir(4);
+		//change_dir(4);
 		//snake_collision(4, 1);
+		path = 4;
 	}
 	else
 		wall_collision();
@@ -438,12 +452,15 @@ int main(int argc, char* args[])
 	reset();
 	while (running) {
 		generate_events();
+		//snake_collision(path, 1);
+		change_dir(path);
+		//usleep(10000);
 		game_logic();
 		if (check_collision(0)) {
 			reset();
 		}
 		render();
-		usleep (200000);
+		usleep (225000);
 	}
 	memset(fb, 0, 128);
 	reset();
