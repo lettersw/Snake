@@ -230,29 +230,37 @@ void reset(void)
 
 void change_dir(int dir)
 {
-	//printf("shx: %d\n", snake.head.x);
-	//printf("shy: %d\n", snake.head.y);
-	//printf("snake.heading: %d\n\n", snake.heading);
+	printf("shx: %d\n", snake.head.x);
+	printf("shy: %d\n", snake.head.y);
+	printf("snake.heading: %d\n\n", snake.heading);
 	switch (dir) {
 		case 1:
-			if (snake.heading != DOWN)
+			if (snake.heading != DOWN)  {
 				snake.heading = UP;
+				printf("up\n");
+			}
 			break;
 		case 2:
-			if (snake.heading != LEFT)
+			if (snake.heading != LEFT) {
 				snake.heading = RIGHT;
+				printf("right\n");
+			}
 			break;
 		case 3:
-			if (snake.heading != UP)
+			if (snake.heading != UP) {
 				snake.heading = DOWN;
+				printf("down\n");
+			}
 			break;
 		case 4:
-			if (snake.heading != RIGHT)
+			if (snake.heading != RIGHT) {
 				snake.heading = LEFT;
+				printf("left\n");
+			}
 			break;
 	}
 }
-/*
+
 int up, right, down, left;
 void snake_collision(int dir, int flag)
 {
@@ -262,7 +270,7 @@ void snake_collision(int dir, int flag)
 	switch (dir) {
 		case 1:
 			for(seg_i = snake.tail; seg_i->next; seg_i=seg_i->next) {
-				if (snake.head.x == seg_i->x && snake.head.y +1 == seg_i->y) {
+				if (snake.head.x +1 == seg_i->x && snake.head.y == seg_i->y) {
 					up = 1;
 				}
 			}
@@ -277,7 +285,7 @@ void snake_collision(int dir, int flag)
 			break;
 		case 2:
 			for(seg_i = snake.tail; seg_i->next; seg_i=seg_i->next) {
-				if (snake.head.x +1 == seg_i->x && snake.head.y == seg_i->y) {
+				if (snake.head.x == seg_i->x && snake.head.y +1 == seg_i->y) {
 					right = 1;
 				}
 			}
@@ -292,7 +300,7 @@ void snake_collision(int dir, int flag)
 			break;
 		case 3:
 			for(seg_i = snake.tail; seg_i->next; seg_i=seg_i->next) {
-				if (snake.head.x == seg_i->x && snake.head.y -1 == seg_i->y) {
+				if (snake.head.x -1 == seg_i->x && snake.head.y == seg_i->y) {
 					down = 1;
 				}
 			}
@@ -307,7 +315,7 @@ void snake_collision(int dir, int flag)
 			break;
 		case 4:
 			for(seg_i = snake.tail; seg_i->next; seg_i=seg_i->next) {
-				if (snake.head.x -1 == seg_i->x && snake.head.y == seg_i->y) {
+				if (snake.head.x == seg_i->x && snake.head.y -1 == seg_i->y) {
 					left = 1;
 				}
 			}
@@ -321,36 +329,53 @@ void snake_collision(int dir, int flag)
 				snake_collision(1, 0);
 			break;
 	}
-}*/
+}
+
 void wall_collision()
 {
 	if (snake.head.y > 5 && snake.head.x > 3) {
 		//printf("upper wall collision detected!\n");
-		if (snake.head.x > 3)
+		if (snake.head.x > 3) {
 			change_dir(1);
-		else 
+			//snake_collision(1, 1);
+		}
+		else {
 			change_dir(3);	
+			//snake_collision(3, 1);
+		}
 	}
 	else if (snake.head.y < 2) {
 		//printf("lower wall collision detected!\n");
-		if (snake.head.x > 3)
+		if (snake.head.x > 3) {
 			change_dir(1);
-		else 
+			//snake_collision(1, 1);
+		}
+		else {
 			change_dir(3);
+			//snake_collision(3, 1);
+		}
 	}
 	else if (snake.head.x > 5) {
 		//printf("right wall collision detected!\n");
-		if (snake.head.y <= 3)
-			change_dir(2);
-		else
+		if (snake.head.y <= 3) {
+			//change_dir(2);
+			snake_collision(2, 1);
+		}
+		else {
 			change_dir(4);
+			//snake_collision(4, 1);
+		}
 	}
 	else if (snake.head.x < 2) {
 		//printf("left wall collision detected!\n");
-		if (snake.head.y <= 3)
+		if (snake.head.y <= 3) {
 			change_dir(2);
-		else
+			//snake_collision(2, 1);
+		}
+		else {
 			change_dir(4);
+			//snake_collision(4, 1);
+		}
 	}
 }
 
@@ -362,21 +387,25 @@ void generate_events()
 		//xd = apple.x - snake.head.x;
 		//printf("xd: %d\n", xd);
 		change_dir(3);
+		//snake_collision(3, 1);
 	}
 	else if (snake.head.x > apple.x && snake.heading != DOWN) {
 		//xd = snake.head.x - apple.x;
 		//printf("xd: %d\n", xd);
 		change_dir(1);
+		//snake_collision(1, 1);
 	}
 	else if (snake.head.y < apple.y && snake.heading != LEFT) {
 		//yd = apple.y - snake.head.y;
 		//printf("yd: %d\n", yd);
 		change_dir(2);
+		//snake_collision(2, 1);
 	}
 	else if (snake.head.y > apple.y && snake.heading != RIGHT) {
 		//yd = snake.head.y - apple.y;
 		//printf("yd: %d\n", yd);
 		change_dir(4);
+		//snake_collision(4, 1);
 	}
 	else
 		wall_collision();
