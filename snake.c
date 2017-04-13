@@ -46,7 +46,8 @@ struct fb_t {
 
 int running = 1;
 
-int path = 0;
+int *path;
+int index = 0;
 
 struct snake_t snake = {
 	{NULL, 4, 4},
@@ -228,6 +229,7 @@ void reset(void)
 	apple.x = rand() % 8;
 	apple.y = rand() % 8;
 	snake.heading = NONE;
+	index = 0;
 }
 
 void change_dir(int dir)
@@ -388,6 +390,11 @@ void wall_collision()
 		}
 	}
 }
+void find_path()
+{
+	
+
+}
 
 void generate_events()
 {
@@ -451,9 +458,11 @@ int main(int argc, char* args[])
 	snake.tail = &snake.head;
 	reset();
 	while (running) {
-		generate_events();
+		find_path();
+		//generate_events();
 		//snake_collision(path, 1);
-		change_dir(path);
+		//change_dir(path);
+		change_dir(path[i]);
 		//usleep(10000);
 		game_logic();
 		if (check_collision(0)) {
